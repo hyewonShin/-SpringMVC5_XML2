@@ -2,6 +2,7 @@ package kr.co.hyewon.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -12,11 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.hyewon.beans.UserBean;
+import kr.co.hyewon.service.UserService;
 import kr.co.hyewon.validator.UserValidator;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
+	
+	@Autowired
+	private UserService userService;
 
 	@GetMapping("/login")
 	public String login() {
@@ -31,6 +36,9 @@ public class UserController {
 	@PostMapping("/join_pro")
 	public String join_pro(@Valid @ModelAttribute("joinUserBean") UserBean joinUserBean, BindingResult result) {
 		if(result.hasErrors()) {
+			
+			userService.addUserInfo(joinUserBean);
+			
 			return "user/join";
 		}
 		return "user/join_success";
