@@ -8,8 +8,7 @@ import kr.co.hyewon.beans.UserBean;
 
 @Repository
 public class UserDao {
-
-	// xml에서 mapper 주입받는 법 
+	
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 	
@@ -19,5 +18,9 @@ public class UserDao {
 	
 	public void addUserInfo(UserBean joinUserBean) {
 		sqlSessionTemplate.insert("user.addUserInfo", joinUserBean);
+	}
+	
+	public UserBean getLoginUserInfo(UserBean tempLoginUserBean) {
+		return sqlSessionTemplate.selectOne("user.getLoginUserInfo", tempLoginUserBean);
 	}
 }
