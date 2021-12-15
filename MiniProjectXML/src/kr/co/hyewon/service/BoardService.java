@@ -22,14 +22,14 @@ public class BoardService {
 
 	@Value("${path.upload")
 	private String path_upload;
-	
+
 	@Autowired
 	private BoardDao boardDao;
-	
+
 	@Resource(name = "loginUserBean")
 	@Lazy
 	private UserBean loginUserBean;
-	
+
 	private String saveUploadFile(MultipartFile upload_file) {
 
 		String file_name = System.currentTimeMillis() + "_" + upload_file.getOriginalFilename();
@@ -56,17 +56,29 @@ public class BoardService {
 
 		boardDao.addContentInfo(writeContentBean);
 	}
-	
+
 	public String getBoardInfoName(int board_info_idx) {
 		return boardDao.getBoardInfoName(board_info_idx);
 	}
-	
+
 	public List<ContentBean> getContentList(int board_info_idx){
 		return boardDao.getContentList(board_info_idx);
 	}
-	
+
 	public ContentBean getContentInfo(int content_idx) {
 		return boardDao.getContentInfo(content_idx);
+	}
+
+	public void modifyContentInfo(ContentBean modifyContentBean) {
+
+		MultipartFile upload_file = modifyContentBean.getUpload_file();
+
+		if(upload_file.getSize() > 0) {
+			String file_name = saveUploadFile(upload_file);
+			modifyContentBean.setContent_file(file_name);
+		}
+
+		boardDao.modifyContentInfo(modifyContentBean);
 	}
 
 }
