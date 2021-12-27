@@ -58,4 +58,8 @@
 			where content_idx = #{content_idx}
 	</update>
 
+	<select id="deleteContentInfo" parameterType="java.lang.Integer">
+			delete from content_table where content_idx = #{content_idx}
+	</select>
+
 </mapper>

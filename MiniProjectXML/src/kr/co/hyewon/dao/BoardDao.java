@@ -34,4 +34,8 @@ public class BoardDao {
 	public void modifyContentInfo(ContentBean modifyContentBean) {
 		sqlSessionTemplate.selectOne("board.modifyContentInfo", modifyContentBean);
 	}
+	
+	public void deleteContentInfo(int content_idx) {
+		sqlSessionTemplate.delete("board.deleteContentInfo", content_idx);
+	}
 }
