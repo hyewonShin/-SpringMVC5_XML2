@@ -2,12 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
-
-	<insert id="addContentInfo"
-		parameterType="kr.co.hyewon.beans.ContentBean">
-
-		<selectKey keyProperty="content_idx" order="BEFORE"
-			resultType="java.lang.Integer">
+	
+	<insert id="addContentInfo" parameterType="kr.co.hyewon.beans.ContentBean">
+		
+		<selectKey keyProperty="content_idx" order="BEFORE" resultType="java.lang.Integer">
 			select content_seq.nextval from dual
 		</selectKey>
 	
@@ -18,28 +16,26 @@
 			#{content_writer_idx}, #{content_board_idx}, sysdate)
 		]]>
 	</insert>
-
-	<select id="getBoardInfoName" parameterType="java.lang.Integer"
-		resultType="java.lang.String">
+	
+	<select id="getBoardInfoName" parameterType="java.lang.Integer" resultType="java.lang.String">
 		<![CDATA[
 			select board_info_name 
 			from board_info_table 
-			where board_info_idx=#{board_info_idx}
+			where board_info_idx = #{board_info_idx}
 		]]>
 	</select>
-
-	<select id="getContentList" parameterType="java.lang.Integer"
-		resultType="kr.co.hyewon.beans.ContentBean">
+	
+	<select id="getContentList" parameterType="java.lang.Integer" resultType="kr.co.hyewon.beans.ContentBean">
 		<![CDATA[
-			select a1.content_idx, a1.content_subject, a2.user_name as content_writer_name,
-			        to_char(a1.content_date, 'YYYY-MM-DD') as content_date 
+			select a1.content_idx, a1.content_subject, a2.user_name as content_writer_name, 
+			       to_char(a1.content_date, 'YYYY-MM-DD') as content_date
 			from content_table a1, user_table a2
 			where a1.content_writer_idx = a2.user_idx 
-			    and a1.content_board_idx = #{board_info_idx} 
+			      and a1.content_board_idx = #{board_info_idx} 
 			order by a1.content_idx desc
 		]]>
 	</select>
-
+	
 	<select id="getContentInfo" parameterType="java.lang.Integer" resultType="kr.co.hyewon.beans.ContentBean">
 		<![CDATA[
 			select a2.user_name as content_writer_name, 
@@ -52,14 +48,40 @@
 	</select>
 	
 	<update id="modifyContentInfo" parameterType="kr.co.hyewon.beans.ContentBean">
-			update content_table 
-			set content_subject = #{content_subject}, content_text = #{content_text}, 
-			content_file = #{content_file,jdbcType=VARCHAR} 
+		<![CDATA[
+			update content_table
+			set content_subject = #{content_subject}, content_text = #{content_text},
+			content_file = #{content_file, jdbcType=VARCHAR}
 			where content_idx = #{content_idx}
+		]]>
 	</update>
-
+	
 	<select id="deleteContentInfo" parameterType="java.lang.Integer">
+		<![CDATA[
 			delete from content_table where content_idx = #{content_idx}
+		]]>
 	</select>
-
+	
+	<select id="getContentCnt" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		<![CDATA[
+			select count(*) from content_table where content_board_idx = #{content_board_idx}
+		]]>
+	</select>
+	
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
